@@ -7,10 +7,10 @@
 #define ROW_WIDTH 16
 #define BASE_SIZE 8
 
-void print_char_hex(char c){
+void print_char_hex(int c){
 	const char* hexa_chars = "0123456789ABCDEF";
 
-	printf("%c%c",hexa_chars[c/16],hexa_chars[c%16]);
+	printf("%c%c",hexa_chars[(c/16)%16],hexa_chars[c%16]);
 };
 
 void write_base(char* base, int base_num){
