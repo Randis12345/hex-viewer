@@ -45,14 +45,20 @@ int main(int argc, char **argv){
 		return 0;
 	}
 
-	char base[BASE_SIZE];
+	char base[BASE_SIZE+1] = {'\0'};
 	clear_base(base);
+	char ascii[ROW_WIDTH+1] = {'\0'};
+
 
 	int ch;
 	int i = 0;
+	int pos = i%ROW_WIDTH;
 
 	while ((ch = getc(file)) != EOF){
-		int pos = i%ROW_WIDTH;
+		pos = i%ROW_WIDTH;
+		if (ch > 126 || ch < 33) ascii[pos] = '.';
+		else ascii[pos] = ch;
+
 		if (pos == 0){
 			write_base(base,i);
 			printf("%s|",base);
@@ -61,11 +67,19 @@ int main(int argc, char **argv){
 
 		print_char_hex(ch);
 
-		if (pos == ROW_WIDTH-1) printf("\n");
+		if (pos == ROW_WIDTH-1) printf("  |%s\n",ascii);
 		i++;
 	}
 
-	if (i%ROW_WIDTH != 0) printf("\n");
+	pos = i%ROW_WIDTH;
+	if (i%ROW_WIDTH == 0) return 0;
+
+	ascii[pos] = '\0';
+	for (int j = 0; j < (ROW_WIDTH - pos)*3 + ROW_WIDTH/ROW_GROUP_WIDTH - (pos-1)/(ROW_WIDTH/ROW_GROUP_WIDTH) - 1; j++){
+		printf(" ");
+	}
+
+	printf("  |%s\n",ascii);
 
 
 	return 0;
